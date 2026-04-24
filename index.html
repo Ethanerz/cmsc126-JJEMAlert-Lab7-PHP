@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+</head>
+<body>
+    <form action="DBConnector.php" method="post">
+        <label for="name">Name: </label><br>
+        <input type="text" maxlength="40" id="name" name="name"><br>
+        <label for="age">Age: </label><br>
+        <input type="number" min="1" max="99" id="age" name="age"><br>
+        <label for="email">Email: </label><br>
+        <input type="email" maxlength="40" id="email" name="email"><br>
+        <label for="course">Course: </label><br>
+        <input type="text" maxlength="40" id="course" name="course"><br>
+        <label for="year">Year Level: </label><br>
+        <input type="number" min="1" max="4" id="year" name="year"><br>
+        <label for="grad">Graduating Status: </label><br>
+        <input type="radio" id="gradyes" name="grad" value="true">
+        <label for="grad">yes</label>
+        <input type="radio" id="gradno" name="grad" value="false">
+        <label for="grad">no</label><br>
+        <label for="pic">Picture: </label><br>
+        <input type="file" id="pic" name="pic"><br>
+        <input type="submit" value="submit" id="submit" name="submit">
+    </form>
+</body>
+</html>
