@@ -114,11 +114,87 @@ elseif ($action == 'select') {
 }
 elseif ($action == 'update') {
     // Handle UPDATE
-    echo "Doing UPDATE query";
+    echo "Doing UPDATE query<br>";
+
+    $student_id = isset($_POST['update_id']) ? (int) $_POST['update_id'] : 0;
+    $new_name   = isset($_POST['new_name']) ? trim($_POST['new_name']) : '';
+    $new_age    = isset($_POST['new_age']) ? trim($_POST['new_age']) : '';
+    $new_email  = isset($_POST['new_email']) ? trim($_POST['new_email']) : '';
+
+    if ($student_id <= 0) {
+        echo "Please enter a valid student ID.<br>";
+    } else {
+        $check_sql = "SELECT name, age, email FROM students WHERE student_id = ?";
+        $check_stmt = $conn->prepare($check_sql);
+        $check_stmt->bind_param("i", $student_id);
+        $check_stmt->execute();
+        $result = $check_stmt->get_result();
+
+        if ($result->num_rows == 0) {
+            echo "No student found with ID: " . $student_id . "<br>";
+        } else {
+            $current = $result->fetch_assoc();
+
+            $name = $new_name !== '' ? $new_name : $current['name'];
+            $age = $new_age !== '' ? (int) $new_age : (int) $current['age'];
+            $email = $new_email !== '' ? $new_email : $current['email'];
+
+            $update_sql = "UPDATE students
+                           SET name = ?, age = ?, email = ?
+                           WHERE student_id = ?";
+            $update_stmt = $conn->prepare($update_sql);
+            $update_stmt->bind_param("sisi", $name, $age, $email, $student_id);
+
+            if ($update_stmt->execute()) {
+                if ($update_stmt->affected_rows > 0) {
+                    echo "Student updated successfully!<br>";
+                } else {
+                    echo "Student found, but no changes were made.<br>";
+                }
+
+                echo "<h3>Updated Student:</h3>";
+                echo "ID: " . $student_id . "<br>";
+                echo "Name: " . htmlspecialchars($name) . "<br>";
+                echo "Age: " . $age . "<br>";
+                echo "Email: " . htmlspecialchars($email) . "<br>";
+            } else {
+                echo "Error updating student: " . $conn->error . "<br>";
+            }
+        }
+    }
 }
 elseif ($action == 'delete') {
     // Handle DELETE
-    echo "Doing DELETE query";
+    echo "Doing DELETE query<br>";
+
+    $student_id = isset($_POST['delete_id']) ? (int) $_POST['delete_id'] : 0;
+
+    if ($student_id <= 0) {
+        echo "Please enter a valid student ID.<br>";
+    } else {
+        $conn->begin_transaction();
+
+        $delete_academic_sql = "DELETE FROM academic_info WHERE student_id = ?";
+        $delete_academic_stmt = $conn->prepare($delete_academic_sql);
+        $delete_academic_stmt->bind_param("i", $student_id);
+
+        $delete_student_sql = "DELETE FROM students WHERE student_id = ?";
+        $delete_student_stmt = $conn->prepare($delete_student_sql);
+        $delete_student_stmt->bind_param("i", $student_id);
+
+        if ($delete_academic_stmt->execute() && $delete_student_stmt->execute()) {
+            if ($delete_student_stmt->affected_rows > 0) {
+                $conn->commit();
+                echo "Student deleted successfully!<br>";
+            } else {
+                $conn->rollback();
+                echo "No student found with ID: " . $student_id . "<br>";
+            }
+        } else {
+            $conn->rollback();
+            echo "Error deleting student: " . $conn->error . "<br>";
+        }
+    }
 }
 
 $conn->close();
