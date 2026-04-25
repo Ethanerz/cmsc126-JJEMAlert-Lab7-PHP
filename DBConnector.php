@@ -54,15 +54,61 @@ if ($conn->query($sql) === TRUE) {
 } else {
     echo "Error creating academic_info table: " . $conn->error . "<br>";
 }
-$name = $_POST['name'];
-$age = $_POST['age'];
-$email = $_POST['email'];
-$sql = "INSERT INTO students (name, age, email)
-            VALUES ('$name', '$age','$email')";
-if ($conn->query($sql) === TRUE){
-    echo "Insert success <br>";
-} else {
-    echo "Error inserting value: " . $conn->error."<br>";
+
+
+
+
+$action = isset($_POST['action']) ? $_POST['action'] : '';
+
+if ($action == 'select') {
+    // Handle SEARCH
+    echo "Doing SELECT query";
+    $search = $_POST['search_term'];
+    if (is_numeric($search)){
+        $sql = "SELECT * FROM students WHERE student_id = '$search'";
+    } else {
+        $sql = "SELECT * FROM students WHERE name = '$search'";
+    }
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        // Display the row
+        $row = $result->fetch_assoc();
+        echo "<h3>Student Found:</h3>";
+        echo "ID: " . $row['student_id'] . "<br>";
+        echo "Name: " . $row['name'] . "<br>";
+        echo "Age: " . $row['age'] . "<br>";
+        echo "Email: " . $row['email'] . "<br>";
+    } else {
+        echo "No student found with: " . $search;
+    }
+
 }
+elseif ($action == 'update') {
+    // Handle UPDATE
+    echo "Doing UPDATE query";
+}
+elseif ($action == 'delete') {
+    // Handle DELETE
+    echo "Doing DELETE query";
+}
+elseif ($action == 'delete') {
+    //Handle INSERT
+    echo "Doing INSERT query";
+    $name = $_POST['name'];
+    $age = $_POST['age'];
+    $email = $_POST['email'];
+    $sql = "INSERT INTO students (name, age, email)
+                VALUES ('$name', '$age','$email')";
+    if ($conn->query($sql) === TRUE){
+        echo "Insert success <br>";
+    } else {
+        echo "Error inserting value: " . $conn->error."<br>";
+    }
+}
+
+
+
+
+
 $conn->close();
 ?>
