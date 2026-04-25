@@ -69,6 +69,9 @@ if ($action == 'insert') {
     $grad   = isset($_POST['grad']) ? $_POST['grad'] : '0';
  
     // Handle file upload
+    if (!is_dir('uploads/')) {
+    mkdir('uploads/', 0755, true);
+    }
     $pic = 'uploads/' . $_FILES['pic']['name'];
     move_uploaded_file($_FILES['pic']['tmp_name'], $pic);
 
