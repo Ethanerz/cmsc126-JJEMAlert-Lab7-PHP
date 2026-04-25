@@ -54,6 +54,15 @@ if ($conn->query($sql) === TRUE) {
 } else {
     echo "Error creating academic_info table: " . $conn->error . "<br>";
 }
-
+$name = $_POST['name'];
+$age = $_POST['age'];
+$email = $_POST['email'];
+$sql = "INSERT INTO students (name, age, email)
+            VALUES ('$name', '$age','$email')";
+if ($conn->query($sql) === TRUE){
+    echo "Insert success <br>";
+} else {
+    echo "Error inserting value: " . $conn->error."<br>";
+}
 $conn->close();
 ?>
