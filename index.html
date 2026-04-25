@@ -6,8 +6,9 @@
     <title>Homepage</title>
 </head>
 <body>
-    <!-- YOUR EXISTING INSERT FORM (UNCHANGED) -->
+
     <form action="DBConnector.php" method="post">
+        <input type="hidden" name="action" value="update">
         <label for="name">Name: </label><br>
         <input type="text" maxlength="40" id="name" name="name"><br>
         <label for="age">Age: </label><br>
@@ -30,7 +31,7 @@
 
     <hr>
 
-    <!-- NEW: SELECT Form -->
+
     <h3>Search Student</h3>
     <form action="DBConnector.php" method="post">
         <input type="hidden" name="action" value="select">
@@ -41,7 +42,6 @@
 
     <hr>
 
-    <!-- NEW: UPDATE Form -->
     <h3>Update Student</h3>
     <form action="DBConnector.php" method="post">
         <input type="hidden" name="action" value="update">
@@ -58,7 +58,6 @@
 
     <hr>
 
-    <!-- NEW: DELETE Form -->
     <h3>Delete Student</h3>
     <form action="DBConnector.php" method="post">
         <input type="hidden" name="action" value="delete">
