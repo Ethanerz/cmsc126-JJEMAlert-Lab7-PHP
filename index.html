@@ -7,8 +7,8 @@
 </head>
 <body>
 
-    <form action="DBConnector.php" method="post">
-        <input type="hidden" name="action" value="update">
+    <form action="DBConnector.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="action" value="insert">
         <label for="name">Name: </label><br>
         <input type="text" maxlength="40" id="name" name="name"><br>
         <label for="age">Age: </label><br>
@@ -20,13 +20,13 @@
         <label for="year">Year Level: </label><br>
         <input type="number" min="1" max="4" id="year" name="year"><br>
         <label for="grad">Graduating Status: </label><br>
-        <input type="radio" id="gradyes" name="grad" value="true">
+        <input type="radio" id="gradyes" name="grad" value="1">
         <label for="grad">yes</label>
-        <input type="radio" id="gradno" name="grad" value="false">
+        <input type="radio" id="gradno" name="grad" value="0">
         <label for="grad">no</label><br>
         <label for="pic">Picture: </label><br>
         <input type="file" id="pic" name="pic"><br>
-        <input type="submit" value="submit" id="submit" name="submit">
+        <input type="submit" value="insert">
     </form>
 
     <hr>
@@ -37,7 +37,7 @@
         <input type="hidden" name="action" value="select">
         <label>Enter ID or Name: </label>
         <input type="text" name="search_term" required>
-        <input type="submit" value="Search">
+        <input type="submit" value="search">
     </form>
 
     <hr>
@@ -53,7 +53,7 @@
         <input type="number" name="new_age"><br>
         <label>New Email: </label>
         <input type="email" name="new_email"><br>
-        <input type="submit" value="Update">
+        <input type="submit" value="update">
     </form>
 
     <hr>
@@ -63,7 +63,7 @@
         <input type="hidden" name="action" value="delete">
         <label>Student ID to Delete: </label>
         <input type="number" name="delete_id" required>
-        <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
+        <input type="submit" value="delete" onclick="return confirm('Are you sure?')">
     </form>
 </body>
 </html>

@@ -45,7 +45,7 @@ $sql = "CREATE TABLE IF NOT EXISTS academic_info (
     student_id INT(6) UNSIGNED NOT NULL,
     course VARCHAR(40) NOT NULL,
     year_level INT(1) NOT NULL,
-    grad_status BOOLEAN NOT NULL,
+    grad_status TINYINT(1) NOT NULL,
     FOREIGN KEY (student_id) REFERENCES students(student_id)
 )";
 
@@ -55,12 +55,42 @@ if ($conn->query($sql) === TRUE) {
     echo "Error creating academic_info table: " . $conn->error . "<br>";
 }
 
-
-
-
+//
 $action = isset($_POST['action']) ? $_POST['action'] : '';
 
-if ($action == 'select') {
+if ($action == 'insert') {
+    echo "Doing INSERT query";
+    //Handle INSERT
+    $name   = $_POST['name'];
+    $age    = $_POST['age'];
+    $email  = $_POST['email'];
+    $course = $_POST['course'];
+    $year   = $_POST['year'];
+    $grad   = isset($_POST['grad']) ? $_POST['grad'] : '0';
+ 
+    // Handle file upload
+    $pic = 'uploads/' . $_FILES['pic']['name'];
+    move_uploaded_file($_FILES['pic']['tmp_name'], $pic);
+
+    $sql = "INSERT INTO students (name, age, email, pic)
+                VALUES ('$name', '$age','$email', '$pic')";
+    if ($conn->query($sql) === TRUE){
+        echo "Insert success <br>";
+
+        $student_id = $conn->insert_id;
+
+        $sql2 = "INSERT INTO academic_info (student_id, course, year_level, grad_status)
+                VALUES ('$student_id', '$course', '$year', '$grad')";
+        if ($conn->query($sql2) === TRUE) {
+            echo "Academic info inserted successfully!<br>";
+        } else {
+            echo "Error inserting academic info: " . $conn->error . "<br>";
+        }
+    } else {
+        echo "Error inserting value: " . $conn->error."<br>";
+    }
+}
+elseif ($action == 'select') {
     // Handle SEARCH
     echo "Doing SELECT query";
     $search = $_POST['search_term'];
@@ -81,7 +111,6 @@ if ($action == 'select') {
     } else {
         echo "No student found with: " . $search;
     }
-
 }
 elseif ($action == 'update') {
     // Handle UPDATE
@@ -91,24 +120,6 @@ elseif ($action == 'delete') {
     // Handle DELETE
     echo "Doing DELETE query";
 }
-elseif ($action == 'delete') {
-    //Handle INSERT
-    echo "Doing INSERT query";
-    $name = $_POST['name'];
-    $age = $_POST['age'];
-    $email = $_POST['email'];
-    $sql = "INSERT INTO students (name, age, email)
-                VALUES ('$name', '$age','$email')";
-    if ($conn->query($sql) === TRUE){
-        echo "Insert success <br>";
-    } else {
-        echo "Error inserting value: " . $conn->error."<br>";
-    }
-}
-
-
-
-
 
 $conn->close();
 ?>
