@@ -6,6 +6,7 @@
     <title>Homepage</title>
 </head>
 <body>
+    <!-- YOUR EXISTING INSERT FORM (UNCHANGED) -->
     <form action="DBConnector.php" method="post">
         <label for="name">Name: </label><br>
         <input type="text" maxlength="40" id="name" name="name"><br>
@@ -25,6 +26,45 @@
         <label for="pic">Picture: </label><br>
         <input type="file" id="pic" name="pic"><br>
         <input type="submit" value="submit" id="submit" name="submit">
+    </form>
+
+    <hr>
+
+    <!-- NEW: SELECT Form -->
+    <h3>Search Student</h3>
+    <form action="DBConnector.php" method="post">
+        <input type="hidden" name="action" value="select">
+        <label>Enter ID or Name: </label>
+        <input type="text" name="search_term" required>
+        <input type="submit" value="Search">
+    </form>
+
+    <hr>
+
+    <!-- NEW: UPDATE Form -->
+    <h3>Update Student</h3>
+    <form action="DBConnector.php" method="post">
+        <input type="hidden" name="action" value="update">
+        <label>Student ID: </label>
+        <input type="number" name="update_id" required><br>
+        <label>New Name: </label>
+        <input type="text" name="new_name"><br>
+        <label>New Age: </label>
+        <input type="number" name="new_age"><br>
+        <label>New Email: </label>
+        <input type="email" name="new_email"><br>
+        <input type="submit" value="Update">
+    </form>
+
+    <hr>
+
+    <!-- NEW: DELETE Form -->
+    <h3>Delete Student</h3>
+    <form action="DBConnector.php" method="post">
+        <input type="hidden" name="action" value="delete">
+        <label>Student ID to Delete: </label>
+        <input type="number" name="delete_id" required>
+        <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
     </form>
 </body>
 </html>
